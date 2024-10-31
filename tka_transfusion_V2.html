@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Risk Calculator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f2f2f2;
+        }
+        
+        .calculator {
+            width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin-top: 100px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-top: 0;
+            font-size: 24px;
+        }
+        
+        #disclaimer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+
+        #abstract {
+            margin-top: 50px;
+        }
+
+        #abstract h2 {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #abstract p {
+            margin-top: 10px;
+        }
+
+        #abstract .section-title {
+            font-weight: bold;
+        }
+
+        #abstract .author-names {
+            font-style: italic;
+        }
+
+        #logo {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        #logo img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+    <script>
+        function calculateRisk() {
+            // Get the checkbox values
+            var anemic = document.getElementById("anemic").checked ? 1 : 0;
+            var bleed_dis = document.getElementById("bleed_dis").checked ? 1 : 0;
+            var renal_fail = document.getElementById("renal_fail").checked ? 1 : 0;
+            var mgender = document.getElementById("mgender").checked ? 1 : 0;
+            var copd = document.getElementById("copd").checked ? 1 : 0;
+            var chf = document.getElementById("chf").checked ? 1 : 0;
+            var asian = document.getElementById("asian").checked ? 1 : 0;
+            var bmi30 = document.getElementById("bmi30").checked ? 1 : 0;
+            var steroids_preop = document.getElementById("steroids_preop").checked ? 1 : 0;
+            var dm = document.getElementById("dm").checked ? 1 : 0;
+            var htn_wmeds = document.getElementById("htn_wmeds").checked ? 1 : 0;
+            var lowalb = document.getElementById("lowalb").checked ? 1 : 0;
+            var indian = document.getElementById("indian").checked ? 1 : 0;
+            var black = document.getElementById("black").checked ? 1 : 0;
+            var elderly = document.getElementById("elderly").checked ? 1 : 0;
+            var smoker = document.getElementById("smoker").checked ? 1 : 0;
+
+            // Calculate the logistic regression equation
+            var logit = -8.354055 + (2.400959 * anemic) + (1.059903 * chf) + (1.0292 * bleed_dis) - (0.7724114 * mgender) + (0.4753705 * steroids_preop) - (0.3438169 * indian) - (0.3072529 * bmi30) + (0.2746961 * copd) + (0.1954304 * dm) + (0.0990988 * elderly) + (0.0919864 * htn_wmeds) + (0.0877255 * black) - (0.0726507 * lowalb) + (0.0183122 * smoker);
+
+            // Calculate probability and format as a percentage
+            var probability = (1 / (1 + Math.exp(-logit))) * 100;
+
+            // Display the result
+            document.getElementById("result").innerHTML = "The Predicted Probability of Perioperative Transfusion is: " + probability.toFixed(2) + "%";
+        }
+    </script>
+</head>
+<body>
+    <div id="container">
+        <div id="logo">
+
+        </div>
+
+        <div class="calculator">
+            <h1>Risk Calculator for Perioperative Transfusion after TKA</h1>
+            <form>
+            <label><input type="checkbox" id="anemic">Anemic (Hb &lt; 12 g/dL in women or &lt; 12g/dL in men)</label><br>
+            <label><input type="checkbox" id="bleed_dis">History of Bleeding Disorder</label><br>
+            <label><input type="checkbox" id="renal_fail">History of Renal Failure</label><br>
+            <label><input type="checkbox" id="mgender">Male Gender</label><br>
+            <label><input type="checkbox" id="copd">History of COPD</label><br>
+            <label><input type="checkbox" id="chf">History of Congestive Heart Failure</label><br>
+            <label><input type="checkbox" id="asian">Asian Race</label><br>
+            <label><input type="checkbox" id="bmi30">BMI &gt; 30 kg/m^2</label><br>
+            <label><input type="checkbox" id="steroids_preop">Preoperative Corticosteroid Use</label><br>
+            <label><input type="checkbox" id="dm">History of Diabetes Mellitus</label><br>
+            <label><input type="checkbox" id="htn_wmeds">Hypertension with Medication</label><br>
+            <label><input type="checkbox" id="lowalb">Low Albumin (&lt; 3.5g/dL)</label><br>
+            <label><input type="checkbox" id="indian">Native American Race</label><br>
+            <label><input type="checkbox" id="black">Black Race</label><br>
+            <label><input type="checkbox" id="elderly">Age >65</label><br>
+            <label><input type="checkbox" id="smoker">Active Smoker</label><br>
+        </form>
+            <button onclick="calculateRisk()">Calculate</button>
+            <div id="result"></div>
+        </div>
+
+        <div id="abstract">
+
+            <p id="disclaimer"><em>Disclaimer: This risk calculator is intended for informational purposes only and should not replace professional medical advice. Always consult with a qualified healthcare provider for diagnosis and treatment options.</em></p>
+        </div>
+    </div>
+</body>
+</html>
